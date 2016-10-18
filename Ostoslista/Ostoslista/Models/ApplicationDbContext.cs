@@ -6,6 +6,7 @@ namespace Ostoslista.Models
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public DbSet<ShoppingList> ShoppingLists { get; set; }
+        public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

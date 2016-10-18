@@ -191,6 +191,10 @@
     <Compile Include="Migrations\201610182328592_AddAttributesToModel.Designer.cs">
       <DependentUpon>201610182328592_AddAttributesToModel.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610182347547_ShoppingListId.cs" />
+    <Compile Include="Migrations\201610182347547_ShoppingListId.Designer.cs">
+      <DependentUpon>201610182347547_ShoppingListId.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -274,6 +278,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610182328592_AddAttributesToModel.resx">
       <DependentUpon>201610182328592_AddAttributesToModel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610182347547_ShoppingListId.resx">
+      <DependentUpon>201610182347547_ShoppingListId.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

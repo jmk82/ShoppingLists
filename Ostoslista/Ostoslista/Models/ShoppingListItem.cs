@@ -14,5 +14,6 @@ namespace Ostoslista.Models
         public int Quantity { get; set; }
         public DateTime Added { get; set; }
         public bool Striked { get; set; }
+        public int ShoppingListId { get; set; }
     }
 }
