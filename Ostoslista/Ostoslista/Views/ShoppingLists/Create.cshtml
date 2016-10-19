@@ -5,11 +5,11 @@
 }
 
 <h2>Uusi ostoslista</h2>
-@using (Html.BeginForm("Luo", "Ostoslistat"))
+@using (Html.BeginForm("Create", "ShoppingLists"))
 {
     <div class="form-group">
         @Html.LabelFor(m => m.Name)
-        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", autofocus = true})
     </div>
     <button type="submit" class="btn btn-primary">Luo</button>
 }

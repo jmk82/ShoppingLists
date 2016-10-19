@@ -1,0 +1,17 @@
+﻿@model List<Ostoslista.Models.ShoppingList>
+
+@{
+    ViewBag.Title = "Ostoslistat";
+}
+
+<h2>Ostoslistat</h2>
+
+<ul class="list-group">
+    @foreach (var list in Model)
+    {
+        <li class="list-group-item">
+            <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })">@list.Name</a>
+            <span class="badge">@list.Items.Count</span>
+        </li>
+    }
+</ul>

@@ -31,3 +31,11 @@ table {
 #newItemQuantity {
     width: 70px;
 }
+
+.glyphicon-remove-circle {
+    color: red;
+}
+
+.badge {
+    background-color: blue;
+}

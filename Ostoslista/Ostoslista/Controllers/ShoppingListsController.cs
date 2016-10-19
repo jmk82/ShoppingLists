@@ -9,16 +9,15 @@ using System.Web.Mvc;
 
 namespace Ostoslista.Controllers
 {
-    public class OstoslistatController : Controller
+    public class ShoppingListsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public OstoslistatController()
+        public ShoppingListsController()
         {
             _context = new ApplicationDbContext();
         }
 
-        // GET: Ostoslistat
         [Authorize]
         public ActionResult Index()
         {
@@ -29,14 +28,14 @@ namespace Ostoslista.Controllers
         }
 
         [Authorize]
-        public ActionResult Luo()
+        public ActionResult Create()
         {
             return View();
         }
 
         [Authorize]
         [HttpPost]
-        public ActionResult Luo(ShoppingListViewModel vm)
+        public ActionResult Create(ShoppingListViewModel vm)
         {
             var shoppingList = new ShoppingList
             {
@@ -49,11 +48,11 @@ namespace Ostoslista.Controllers
             _context.ShoppingLists.Add(shoppingList);
             _context.SaveChanges();
 
-            return RedirectToAction("Muokkaa", new { id = shoppingList.Id });
+            return RedirectToAction("Edit", new { id = shoppingList.Id });
         }
 
         [Authorize]
-        public ActionResult Muokkaa(int id)
+        public ActionResult Edit(int id)
         {
             var userId = User.Identity.GetUserId();
             var shoppingList = _context.ShoppingLists.Include(sl => sl.Items).SingleOrDefault(sl => sl.Id == id);
@@ -79,6 +78,24 @@ namespace Ostoslista.Controllers
             };
 
             return View(vm);
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult AddItem(ShoppingListViewModel vm)
+        {
+            var item = new ShoppingListItem
+            {
+                Name = vm.newItem.Name,
+                Quantity = vm.newItem.Quantity,
+                Added = DateTime.Now,
+                ShoppingListId = vm.Id
+            };
+
+            _context.ShoppingListItems.Add(item);
+            _context.SaveChanges();
+
+            return RedirectToAction("Edit", "ShoppingLists", new { id = vm.Id });
         }
     }
 }

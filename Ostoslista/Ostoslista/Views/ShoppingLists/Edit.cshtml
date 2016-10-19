@@ -1,0 +1,39 @@
+﻿@model Ostoslista.ViewModels.ShoppingListViewModel
+
+@{
+    ViewBag.Title = "Muokkaa listaa";
+}
+
+<h2>Muokkaa</h2>
+
+<h3>@Model.Name</h3>
+
+@using (Html.BeginForm("AddItem", "ShoppingLists"))
+{
+    <div class="form-group form-inline">
+        @Html.TextBoxFor(m => m.newItem.Name, new { @class = "form-control", placeholder = "Uusi ostos", autofocus = true })
+        @Html.LabelFor(m => m.newItem.Quantity)
+        @Html.TextBoxFor(m => m.newItem.Quantity, new { @type = "number", @class = "form-control", id = "newItemQuantity", @Value = 1 })
+        @Html.HiddenFor(m => m.Id)
+        <button type="submit" class="btn btn-primary" id="addNewItemButton">Lisää</button>
+    </div>
+}
+
+<table class="table table-condensed table-hover" id="itemsTable">
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    <span class="glyphicon glyphicon-remove-circle"></span>
+                    @item.Name
+                </td>
+                <td>
+                    <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                    @item.Quantity
+                    <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                </td>
+            </tr>
+            }
+    </tbody>
+</table>

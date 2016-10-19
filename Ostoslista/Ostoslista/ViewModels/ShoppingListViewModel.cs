@@ -15,5 +15,7 @@ namespace Ostoslista.ViewModels
         public string Name { get; set; }
 
         public ICollection<ShoppingListItem> Items { get; set; }
+
+        public ShoppingListItemViewModel newItem { get; set; }
     }
 }
