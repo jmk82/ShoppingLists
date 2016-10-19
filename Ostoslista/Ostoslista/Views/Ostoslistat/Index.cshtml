@@ -1,0 +1,14 @@
+﻿@model List<Ostoslista.Models.ShoppingList>
+
+@{
+    ViewBag.Title = "Ostoslistat";
+}
+
+<h2>Ostoslistat</h2>
+
+<ul>
+@foreach (var list in Model)
+{
+    <li>@list.Name</li>
+}
+</ul>
