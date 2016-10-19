@@ -19,22 +19,46 @@
     <button type="submit" class="btn btn-primary" id="addNewItemButton">Lisää</button>
 </form>
 
-<table class="table table-condensed table-hover">
-    @foreach (var item in Model.Items)
-    {
-        <tr>
-            <td>@item.Name</td>
-            <td>@item.Quantity</td>
-        </tr>
-    }
+<table class="table table-condensed table-hover" id="itemsTable">
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Quantity</td>
+            </tr>
+        }
+    </tbody>
 </table>
 
 @Scripts.Render("~/bundles/jquery")
 <script>
     $(document).ready(function () {
+        $('#newItem').focus();
+
         $('#addNewItemButton').click(function (e) {
             e.preventDefault();
+
             var newItemName = $('#newItem').val();
+            var newItemQuantity = $('#newItemQuantity').val();
+            var shoppingListId = @Model.Id;
+
+            var newItem = {
+                Name: newItemName,
+                Quantity: newItemQuantity,
+                ShoppingListId: shoppingListId
+            };
+            
+            $.post("/api/shoppinglistitems", newItem)
+                .done(function () {
+                    $('#itemsTable > tbody:last-child').append('<tr><td>' + newItemName + '</td><td>' + newItemQuantity + '</td></tr>');
+                    $('#newItem').val('');
+                    $('#newItemQuantity').val('1');
+                    $('#newItem').focus();
+                })
+                .fail(function () {
+                    alert("Tapahtui virhe");
+                });
         });
     });
 </script>

@@ -49,7 +49,7 @@ namespace Ostoslista.Controllers
             _context.ShoppingLists.Add(shoppingList);
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return RedirectToAction("Muokkaa", new { id = shoppingList.Id });
         }
 
         [Authorize]
