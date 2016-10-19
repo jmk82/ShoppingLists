@@ -1,0 +1,15 @@
+﻿@model Ostoslista.ViewModels.ShoppingListViewModel
+
+@{
+    ViewBag.Title = "Luo uusi ostoslista";
+}
+
+<h2>Uusi ostoslista</h2>
+@using (Html.BeginForm("Luo", "Ostoslistat"))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+    </div>
+    <button type="submit" class="btn btn-primary">Luo</button>
+}

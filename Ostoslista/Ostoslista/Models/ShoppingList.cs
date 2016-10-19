@@ -10,6 +10,7 @@ namespace Ostoslista.Models
     {
         public int Id { get; set; }
         public ApplicationUser Owner { get; set; }
+        public string OwnerId { get; set; }
 
         [Required]
         [StringLength(255)]

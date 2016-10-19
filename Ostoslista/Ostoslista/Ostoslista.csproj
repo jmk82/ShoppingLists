@@ -196,6 +196,10 @@
     <Compile Include="Migrations\201610182347547_ShoppingListId.Designer.cs">
       <DependentUpon>201610182347547_ShoppingListId.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610191037561_AddOwnerIdForeignKeyToShoppingList.cs" />
+    <Compile Include="Migrations\201610191037561_AddOwnerIdForeignKeyToShoppingList.Designer.cs">
+      <DependentUpon>201610191037561_AddOwnerIdForeignKeyToShoppingList.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -205,6 +209,7 @@
     <Compile Include="Models\ShoppingListItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ShoppingListViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
@@ -238,8 +243,6 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -262,6 +265,8 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Ostoslistat\Index.cshtml" />
+    <Content Include="Views\Ostoslistat\Luo.cshtml" />
+    <Content Include="Views\Ostoslistat\Muokkaa.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -283,6 +288,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610182347547_ShoppingListId.resx">
       <DependentUpon>201610182347547_ShoppingListId.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610191037561_AddOwnerIdForeignKeyToShoppingList.resx">
+      <DependentUpon>201610191037561_AddOwnerIdForeignKeyToShoppingList.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -1,0 +1,40 @@
+﻿@model Ostoslista.ViewModels.ShoppingListViewModel
+
+@{
+    ViewBag.Title = "Muokkaa listaa";
+}
+
+<h2>Muokkaa</h2>
+
+<h3>@Model.Name</h3>
+
+<form class="form-inline">
+    <div class="form-group">
+        <input type="text" id="newItem" class="form-control" placeholder="Uusi ostos">
+    </div>
+    <div class="form-group">
+        <label for="newItemQuantity">Määrä</label>
+        <input type="number" id="newItemQuantity" value="1" class="form-control">
+     </div>
+    <button type="submit" class="btn btn-primary" id="addNewItemButton">Lisää</button>
+</form>
+
+<table class="table table-condensed table-hover">
+    @foreach (var item in Model.Items)
+    {
+        <tr>
+            <td>@item.Name</td>
+            <td>@item.Quantity</td>
+        </tr>
+    }
+</table>
+
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $(document).ready(function () {
+        $('#addNewItemButton').click(function (e) {
+            e.preventDefault();
+            var newItemName = $('#newItem').val();
+        });
+    });
+</script>

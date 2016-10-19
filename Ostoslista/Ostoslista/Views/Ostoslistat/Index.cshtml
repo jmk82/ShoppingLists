@@ -7,8 +7,11 @@
 <h2>Ostoslistat</h2>
 
 <ul>
-@foreach (var list in Model)
-{
-    <li>@list.Name</li>
-}
+    @foreach (var list in Model)
+    {
+        <li>
+            <a href="@Url.Action("Muokkaa", "Ostoslistat", new { id = list.Id })">@list.Name</a>
+            @list.Added
+        </li>
+    }
 </ul>
