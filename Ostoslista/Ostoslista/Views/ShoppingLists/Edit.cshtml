@@ -25,13 +25,17 @@
         {
             <tr>
                 <td>
-                    <span class="glyphicon glyphicon-remove-circle"></span>
-                    @item.Name
+                    @using (Html.BeginForm("DeleteItem", "ShoppingLists", new { id = item.Id }))
+                    {
+                        <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
+                        @item.Name
+                    }
+                    
                 </td>
                 <td>
-                    <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button>
+                    @*<button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button>*@
                     @item.Quantity
-                    <button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button>
+                    @*<button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button>*@
                 </td>
             </tr>
             }

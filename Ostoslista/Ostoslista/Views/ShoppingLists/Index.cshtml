@@ -10,8 +10,14 @@
     @foreach (var list in Model)
     {
         <li class="list-group-item">
-            <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })">@list.Name</a>
-            <span class="badge">@list.Items.Count</span>
+            @using (Html.BeginForm("Delete", "ShoppingLists", new { id = list.Id }))
+            {
+                <button class="btn btn-danger btn-xs" onclick="return confirm('Poistetaanko lista?')">
+                    <span class="glyphicon glyphicon-remove"></span>
+                </button>
+                <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })">@list.Name</a>
+                <span class="badge">@list.Items.Count</span>
+            }
         </li>
     }
 </ul>

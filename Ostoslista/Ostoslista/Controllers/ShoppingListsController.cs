@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Ostoslista.Controllers
 {
+    [Authorize]
     public class ShoppingListsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -18,7 +19,6 @@ namespace Ostoslista.Controllers
             _context = new ApplicationDbContext();
         }
 
-        [Authorize]
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
@@ -27,13 +27,11 @@ namespace Ostoslista.Controllers
             return View(lists);
         }
 
-        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
-        [Authorize]
         [HttpPost]
         public ActionResult Create(ShoppingListViewModel vm)
         {
@@ -51,7 +49,6 @@ namespace Ostoslista.Controllers
             return RedirectToAction("Edit", new { id = shoppingList.Id });
         }
 
-        [Authorize]
         public ActionResult Edit(int id)
         {
             var userId = User.Identity.GetUserId();
@@ -61,7 +58,7 @@ namespace Ostoslista.Controllers
             {
                 Response.StatusCode = 404;
                 ViewBag.Message = "Ostoslistaa ei löytynyt";
-                return View("Error"); ;
+                return View("Error");
             }
             if (shoppingList.OwnerId != userId)
             {
@@ -80,7 +77,6 @@ namespace Ostoslista.Controllers
             return View(vm);
         }
 
-        [Authorize]
         [HttpPost]
         public ActionResult AddItem(ShoppingListViewModel vm)
         {
@@ -96,6 +92,58 @@ namespace Ostoslista.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Edit", "ShoppingLists", new { id = vm.Id });
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var list = _context.ShoppingLists.SingleOrDefault(s => s.Id == id);
+
+            if (list == null)
+            {
+                Response.StatusCode = 404;
+                ViewBag.Message = "Ostoslistaa ei löytynyt";
+                return View("Error");
+            }
+            if (list.OwnerId != userId)
+            {
+                Response.StatusCode = 403;
+                ViewBag.Message = "Ei oikeutta poistaa ostoslistaa";
+                return View("Error");
+            }
+
+            _context.ShoppingLists.Remove(list);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult DeleteItem(int id)
+        {
+            var userId = User.Identity.GetUserId();
+            var item = _context.ShoppingListItems.SingleOrDefault(i => i.Id == id);
+
+            if (item == null)
+            {
+                Response.StatusCode = 404;
+                ViewBag.Message = "Ostosta ei löytynyt";
+                return View("Error");
+            }
+
+            var list = _context.ShoppingLists.SingleOrDefault(s => s.Id == item.ShoppingListId);
+
+            if (list.OwnerId != userId)
+            {
+                Response.StatusCode = 403;
+                ViewBag.Message = "Ei oikeutta poistaa ostosta";
+                return View("Error");
+            }
+
+            _context.ShoppingListItems.Remove(item);
+            _context.SaveChanges();
+
+            return RedirectToAction("Edit", "ShoppingLists", new { id = list.Id });
         }
     }
 }
