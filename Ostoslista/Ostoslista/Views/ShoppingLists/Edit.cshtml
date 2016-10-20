@@ -1,4 +1,4 @@
-﻿@model Ostoslista.ViewModels.ShoppingListViewModel
+﻿@model Ostoslista.ViewModels.ComboViewModel
 
 @{
     ViewBag.Title = "Muokkaa listaa";
@@ -6,22 +6,25 @@
 
 <h2>Muokkaa</h2>
 
-<h3>@Model.Name</h3>
+<h3>@Model.ShoppingListViewModel.Name</h3>
 
-@using (Html.BeginForm("AddItem", "ShoppingLists"))
+@using (Html.BeginForm("Edit", "ShoppingLists", FormMethod.Post))
 {
+    @Html.ValidationSummary()
+
     <div class="form-group form-inline">
-        @Html.TextBoxFor(m => m.newItem.Name, new { @class = "form-control", placeholder = "Uusi ostos", autofocus = true })
-        @Html.LabelFor(m => m.newItem.Quantity)
-        @Html.TextBoxFor(m => m.newItem.Quantity, new { @type = "number", @class = "form-control", id = "newItemQuantity", @Value = 1 })
-        @Html.HiddenFor(m => m.Id)
+        @Html.TextBoxFor(m => m.ShoppingListItemViewModel.Name, new { @class = "form-control", placeholder = "Uusi ostos", autofocus = true })
+        @Html.LabelFor(m => m.ShoppingListItemViewModel.Quantity)
+        @Html.TextBoxFor(m => m.ShoppingListItemViewModel.Quantity, new { @type = "number", @class = "form-control", id = "newItemQuantity", @Value = 1 })
+        @Html.HiddenFor(m => m.ShoppingListViewModel.Name)
+        @Html.HiddenFor(m => m.ShoppingListViewModel.Id)
         <button type="submit" class="btn btn-primary" id="addNewItemButton">Lisää</button>
     </div>
 }
 
 <table class="table table-condensed table-hover" id="itemsTable">
     <tbody>
-        @foreach (var item in Model.Items)
+        @foreach (var item in Model.ShoppingListViewModel.Items)
         {
             <tr>
                 <td>

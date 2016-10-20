@@ -209,6 +209,7 @@
     <Compile Include="Models\ShoppingListItem.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModels\ComboViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListItemViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListViewModel.cs" />
   </ItemGroup>

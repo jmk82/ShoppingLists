@@ -7,6 +7,8 @@
 <h2>Uusi ostoslista</h2>
 @using (Html.BeginForm("Create", "ShoppingLists"))
 {
+    @Html.ValidationSummary()
+
     <div class="form-group">
         @Html.LabelFor(m => m.Name)
         @Html.TextBoxFor(m => m.Name, new { @class = "form-control", autofocus = true})

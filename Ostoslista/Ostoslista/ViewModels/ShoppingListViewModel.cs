@@ -12,10 +12,10 @@ namespace Ostoslista.ViewModels
         public int Id { get; set; }
 
         [Display(Name = "Listan nimi")]
+        [Required(ErrorMessage = "Anna nimi ostoslistalle")]
+        [StringLength(256, ErrorMessage = "Nimen pituus voi olla enintään {1} merkkiä")]
         public string Name { get; set; }
 
         public ICollection<ShoppingListItem> Items { get; set; }
-
-        public ShoppingListItemViewModel newItem { get; set; }
     }
 }

@@ -35,18 +35,23 @@ namespace Ostoslista.Controllers
         [HttpPost]
         public ActionResult Create(ShoppingListViewModel vm)
         {
-            var shoppingList = new ShoppingList
+            if (ModelState.IsValid)
             {
-                OwnerId = User.Identity.GetUserId(),
-                Name = vm.Name,
-                Added = DateTime.Now,
-                Updated = DateTime.Now
-            };
+                var shoppingList = new ShoppingList
+                {
+                    OwnerId = User.Identity.GetUserId(),
+                    Name = vm.Name,
+                    Added = DateTime.Now,
+                    Updated = DateTime.Now
+                };
 
-            _context.ShoppingLists.Add(shoppingList);
-            _context.SaveChanges();
+                _context.ShoppingLists.Add(shoppingList);
+                _context.SaveChanges();
 
-            return RedirectToAction("Edit", new { id = shoppingList.Id });
+                return RedirectToAction("Edit", new { id = shoppingList.Id });
+            }
+
+            return View();
         }
 
         public ActionResult Edit(int id)
@@ -67,6 +72,41 @@ namespace Ostoslista.Controllers
                 return View("Error");
             }
 
+            var vm = CreateShoppingListViewModel(shoppingList);
+
+            return View(new ComboViewModel { ShoppingListViewModel = vm });
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ComboViewModel vm)
+        {
+            if (ModelState.IsValid)
+            {
+                var item = new ShoppingListItem
+                {
+                    Name = vm.ShoppingListItemViewModel.Name,
+                    Quantity = vm.ShoppingListItemViewModel.Quantity,
+                    Added = DateTime.Now,
+                    ShoppingListId = vm.ShoppingListViewModel.Id
+                };
+
+                _context.ShoppingListItems.Add(item);
+                _context.SaveChanges();
+
+                return RedirectToAction("Edit", "ShoppingLists", new { id = vm.ShoppingListViewModel.Id });
+            }
+
+            var shoppingList = _context.ShoppingLists.Include(sl => sl.Items).SingleOrDefault(sl => sl.Id == vm.ShoppingListViewModel.Id);
+            var comboVm = new ComboViewModel
+            {
+                ShoppingListViewModel = CreateShoppingListViewModel(shoppingList)
+            };
+
+            return View(comboVm);
+        }
+
+        private ShoppingListViewModel CreateShoppingListViewModel(ShoppingList shoppingList)
+        {
             var vm = new ShoppingListViewModel
             {
                 Id = shoppingList.Id,
@@ -74,24 +114,7 @@ namespace Ostoslista.Controllers
                 Items = shoppingList.Items
             };
 
-            return View(vm);
-        }
-
-        [HttpPost]
-        public ActionResult AddItem(ShoppingListViewModel vm)
-        {
-            var item = new ShoppingListItem
-            {
-                Name = vm.newItem.Name,
-                Quantity = vm.newItem.Quantity,
-                Added = DateTime.Now,
-                ShoppingListId = vm.Id
-            };
-
-            _context.ShoppingListItems.Add(item);
-            _context.SaveChanges();
-
-            return RedirectToAction("Edit", "ShoppingLists", new { id = vm.Id });
+            return vm;
         }
 
         [HttpPost]
