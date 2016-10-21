@@ -219,6 +219,7 @@
     <Compile Include="Models\ShoppingListShare.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="Utils\TimeConverter.cs" />
     <Compile Include="ViewModels\ComboViewModel.cs" />
     <Compile Include="ViewModels\ShareListViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListItemViewModel.cs" />

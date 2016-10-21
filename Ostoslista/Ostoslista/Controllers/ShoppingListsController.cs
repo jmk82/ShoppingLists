@@ -34,7 +34,9 @@ namespace Ostoslista.Controllers
                     Id = list.Id,
                     Name = list.Name,
                     Items = list.Items,
-                    AddedDate = list.Added.ToString("d", CultureInfo.CurrentCulture)
+                    AddedDate = Utils.TimeConverter.ConvertToEetTime(list.Added)
+                                    .ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI"))
+                    //AddedDate = list.Added.ToString("d", CultureInfo.CreateSpecificCulture("fi-FI"))
                 });
             }
 
@@ -57,8 +59,8 @@ namespace Ostoslista.Controllers
                 {
                     OwnerId = User.Identity.GetUserId(),
                     Name = vm.Name,
-                    Added = DateTime.Now,
-                    Updated = DateTime.Now
+                    Added = DateTime.UtcNow,
+                    Updated = DateTime.UtcNow
                 };
 
                 _context.ShoppingLists.Add(shoppingList);
@@ -102,7 +104,7 @@ namespace Ostoslista.Controllers
                 {
                     Name = vm.ShoppingListItemViewModel.Name,
                     Quantity = vm.ShoppingListItemViewModel.Quantity,
-                    Added = DateTime.Now,
+                    Added = DateTime.UtcNow,
                     ShoppingListId = vm.ShoppingListViewModel.Id
                 };
 
