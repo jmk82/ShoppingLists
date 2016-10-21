@@ -55,10 +55,10 @@ namespace Ostoslista.Controllers
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
             ViewBag.StatusMessage =
-                message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
-                : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                message == ManageMessageId.ChangePasswordSuccess ? "Salasana vaihdettu onnistuneesti"
+                : message == ManageMessageId.SetPasswordSuccess ? "Salasana asetettu onnistuneesti"
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
-                : message == ManageMessageId.Error ? "An error has occurred."
+                : message == ManageMessageId.Error ? "Tapahtui virhe"
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
                 : message == ManageMessageId.RemovePhoneSuccess ? "Your phone number was removed."
                 : "";
@@ -349,7 +349,13 @@ namespace Ostoslista.Controllers
         {
             foreach (var error in result.Errors)
             {
-                ModelState.AddModelError("", error);
+                if (error == "Incorrect password.")
+                {
+                    ModelState.AddModelError("", "Virheellinen salasana");
+                } else
+                {
+                    ModelState.AddModelError("", error);
+                }
             }
         }
 

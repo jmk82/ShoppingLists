@@ -14,7 +14,7 @@ namespace Ostoslista.ViewModels
         public string Name { get; set; }
 
         [Display(Name = "Määrä")]
-        [Range(1,int.MaxValue, ErrorMessage = "Ostoksen lukumäärä tulee olla välillä {2} - {1}")]
+        [Range(1,int.MaxValue, ErrorMessage = "Ostoksen lukumäärä tulee olla välillä {1} ... {2}")]
         public int Quantity { get; set; }
 
         public int ShoppingListId { get; set; }

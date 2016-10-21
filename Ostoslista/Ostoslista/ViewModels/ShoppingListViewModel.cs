@@ -16,6 +16,8 @@ namespace Ostoslista.ViewModels
         [StringLength(256, ErrorMessage = "Nimen pituus voi olla enintään {1} merkkiä")]
         public string Name { get; set; }
 
+        public string AddedDate { get; set; }
+
         public ICollection<ShoppingListItem> Items { get; set; }
     }
 }

@@ -86,7 +86,7 @@ namespace Ostoslista.Controllers
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
                 case SignInStatus.Failure:
                 default:
-                    ModelState.AddModelError("", "Invalid login attempt.");
+                    ModelState.AddModelError("", "Virheelliset kirjautumistiedot");
                     return View(model);
             }
         }

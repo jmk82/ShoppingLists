@@ -22,6 +22,11 @@
     </div>
 }
 
+@if (Model.ShoppingListViewModel.Items.Count == 0)
+{
+    <h5>Listalla ei vielä rivejä. Lisää ostoksia listalle.</h5>
+}
+
 <table class="table table-condensed table-hover" id="itemsTable">
     <tbody>
         @foreach (var item in Model.ShoppingListViewModel.Items)

@@ -4,6 +4,7 @@ using Ostoslista.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Globalization;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -24,9 +25,22 @@ namespace Ostoslista.Controllers
             var userId = User.Identity.GetUserId();
             var lists = _context.ShoppingLists.Where(l => l.OwnerId == userId).Include(sl => sl.Items).ToList();
 
+            List<ShoppingListViewModel> listVms = new List<ShoppingListViewModel>();
+
+            foreach (var list in lists)
+            {
+                listVms.Add(new ShoppingListViewModel
+                {
+                    Id = list.Id,
+                    Name = list.Name,
+                    Items = list.Items,
+                    AddedDate = list.Added.ToString("d", CultureInfo.CurrentCulture)
+                });
+            }
+
             ViewBag.Message = TempData["message"];
 
-            return View(lists);
+            return View(listVms);
         }
 
         public ActionResult Create()

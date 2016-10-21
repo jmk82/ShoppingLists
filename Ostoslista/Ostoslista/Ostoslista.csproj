@@ -205,6 +205,10 @@
     <Compile Include="Migrations\201610202307114_AddShoppingListShare.Designer.cs">
       <DependentUpon>201610202307114_AddShoppingListShare.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610211317521_AddForeignKeysToShares.cs" />
+    <Compile Include="Migrations\201610211317521_AddForeignKeysToShares.Designer.cs">
+      <DependentUpon>201610211317521_AddForeignKeysToShares.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -223,6 +227,7 @@
   <ItemGroup>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\images\notebook.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -280,6 +285,7 @@
     <Content Include="Views\Shares\Create.cshtml" />
     <Content Include="Views\Shares\Index.cshtml" />
     <Content Include="Views\ShoppingLists\ViewShared.cshtml" />
+    <Content Include="Views\Shared\_ListsPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -307,6 +313,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610202307114_AddShoppingListShare.resx">
       <DependentUpon>201610202307114_AddShoppingListShare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610211317521_AddForeignKeysToShares.resx">
+      <DependentUpon>201610211317521_AddForeignKeysToShares.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

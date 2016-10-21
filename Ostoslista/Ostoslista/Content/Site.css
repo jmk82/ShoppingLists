@@ -36,6 +36,16 @@ table {
     color: white;
 }
 
+.remove-item-button {
+    margin-right: 5px;
+}
+
 .badge {
     background-color: blue;
+    margin-left: 5px;
+}
+
+.jumbotron {
+    background-image: url("/Content/images/notebook.jpg");
+    background-size: cover;
 }

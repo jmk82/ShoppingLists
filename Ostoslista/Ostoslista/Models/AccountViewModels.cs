@@ -6,7 +6,7 @@ namespace Ostoslista.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Sähköposti")]
         public string Email { get; set; }
     }
 
@@ -49,16 +49,16 @@ namespace Ostoslista.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Email")]
+        [Display(Name = "Sähköposti")]
         [EmailAddress]
         public string Email { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Salasana")]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
+        [Display(Name = "Muista minut")]
         public bool RememberMe { get; set; }
     }
 
@@ -66,18 +66,18 @@ namespace Ostoslista.Models
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
+        [Display(Name = "Sähköposti")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100, ErrorMessage = "{0} tulee olla vähintään {2} merkkiä", MinimumLength = 6)]
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
+        [Display(Name = "Salasana")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [Display(Name = "Vahvista salasana")]
+        [Compare("Password", ErrorMessage = "Salasana ja vahvistus eivät täsmää")]
         public string ConfirmPassword { get; set; }
     }
 
