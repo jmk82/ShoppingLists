@@ -11,8 +11,8 @@ namespace Ostoslista.ViewModels
         public int ShoppingListId { get; set; }
         public string Name { get; set; }
 
-        [EmailAddress]
-        [Required]
+        [EmailAddress(ErrorMessage = "Sähköpostiosoite ei ole kelvollinen")]
+        [Required(ErrorMessage = "Anna vastaanottajan sähköpostiosoite")]
         [Display(Name = "Vastaanottajan sähköpostiosoite")]
         public string ReceiverEmail { get; set; }
     }

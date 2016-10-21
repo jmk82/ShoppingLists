@@ -1,16 +1,16 @@
 ﻿@model Ostoslista.Models.ShoppingList
 
 @{
-    ViewBag.Title = "ViewShared";
+    ViewBag.Title = "Lista";
 }
 
 <h2>@Model.Name</h2>
 
-<table class="table table-condensed table-hover" id="itemsTable">
+<table class="table table-condensed table-hover" id="items-table">
     <tbody>
         @foreach (var item in Model.Items)
         {
-            <tr>
+            <tr class="list-item" id="list-item-@item.Id">
                 <td>
                     @item.Name
                 </td>
@@ -21,3 +21,27 @@
         }
     </tbody>
 </table>
+
+<h4 class="hidden-header">Ostettu: </h4>
+
+<table class="table table-condensed table-hover" id="bought-items-table">
+    <tbody>
+       
+    </tbody>
+</table>
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            $('.list-item').click(function () {
+                $('.hidden-header').css("visibility", "visible");
+                var clickedRow = $(this);
+                var col1 = clickedRow.find(":first-child").text();
+                var col2 = clickedRow.find(":nth-child(2)").text();
+                $('#bought-items-table > tbody').append('<tr><td>' + col1 + '</td><td>'+ col2 + '</td></tr>');
+                clickedRow.remove();
+            });
+        });
+    </script>
+}

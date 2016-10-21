@@ -49,3 +49,15 @@ table {
     background-image: url("/Content/images/notebook.jpg");
     background-size: cover;
 }
+
+.striked {
+    text-decoration: line-through;
+}
+
+.hidden-header {
+    visibility: hidden;
+}
+
+#items-table {
+    cursor: pointer;
+}
