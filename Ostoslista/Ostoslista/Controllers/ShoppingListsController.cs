@@ -24,6 +24,8 @@ namespace Ostoslista.Controllers
             var userId = User.Identity.GetUserId();
             var lists = _context.ShoppingLists.Where(l => l.OwnerId == userId).Include(sl => sl.Items).ToList();
 
+            ViewBag.Message = TempData["message"];
+
             return View(lists);
         }
 
@@ -54,7 +56,7 @@ namespace Ostoslista.Controllers
             return View();
         }
 
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
             var userId = User.Identity.GetUserId();
             var shoppingList = _context.ShoppingLists.Include(sl => sl.Items).SingleOrDefault(sl => sl.Id == id);
@@ -167,6 +169,24 @@ namespace Ostoslista.Controllers
             _context.SaveChanges();
 
             return RedirectToAction("Edit", "ShoppingLists", new { id = list.Id });
+        }
+
+        public ActionResult ViewShared(int? id)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var isAllowed = _context.ShoppingListShares.Any(s => s.ShoppingListId == id && s.ReceiverUserId == userId);
+
+            if (!isAllowed)
+            {
+                Response.StatusCode = 403;
+                ViewBag.Message = "Ei oikeutta katsella ostoslistaa";
+                return View("Error");
+            }
+
+            var list = _context.ShoppingLists.Include(s => s.Items).SingleOrDefault(s => s.Id == id);
+
+            return View(list);
         }
     }
 }

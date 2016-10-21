@@ -4,7 +4,11 @@
     ViewBag.Title = "Ostoslistat";
 }
 
-<h2>Ostoslistat</h2>
+<h4>
+    @ViewBag.Message
+</h4>
+
+<h2>Omat ostoslistat</h2>
 
 <ul class="list-group">
     @foreach (var list in Model)

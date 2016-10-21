@@ -1,0 +1,20 @@
+﻿@model Ostoslista.ViewModels.ShareListViewModel
+
+@{
+    ViewBag.Title = "Jaa lista";
+}
+
+<h2>Jaa lista "@Model.Name"</h2>
+
+@using (Html.BeginForm("Create", "Shares"))
+{
+    @Html.ValidationSummary()
+
+    <div class="form-group">
+        @Html.HiddenFor(m => m.ShoppingListId)
+        @Html.HiddenFor(m => m.Name)
+        @Html.LabelFor(m => m.ReceiverEmail)
+        @Html.TextBoxFor(m => m.ReceiverEmail, new { @class = "form-control", placeholder = "email", autofocus = true })
+    </div>
+    <button type="submit" class="btn btn-primary">Jaa</button>
+}

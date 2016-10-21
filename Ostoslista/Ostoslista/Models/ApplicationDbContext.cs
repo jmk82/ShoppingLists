@@ -7,6 +7,7 @@ namespace Ostoslista.Models
     {
         public DbSet<ShoppingList> ShoppingLists { get; set; }
         public DbSet<ShoppingListItem> ShoppingListItems { get; set; }
+        public DbSet<ShoppingListShare> ShoppingListShares { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)

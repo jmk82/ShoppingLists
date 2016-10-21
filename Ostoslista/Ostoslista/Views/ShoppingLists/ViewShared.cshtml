@@ -1,0 +1,23 @@
+﻿@model Ostoslista.Models.ShoppingList
+
+@{
+    ViewBag.Title = "ViewShared";
+}
+
+<h2>@Model.Name</h2>
+
+<table class="table table-condensed table-hover" id="itemsTable">
+    <tbody>
+        @foreach (var item in Model.Items)
+        {
+            <tr>
+                <td>
+                    @item.Name
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

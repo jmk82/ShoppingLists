@@ -1,0 +1,16 @@
+﻿@model IEnumerable<Ostoslista.Models.ShoppingList>
+
+@{
+    ViewBag.Title = "Jaetut listat";
+}
+
+<h2>Minulle jaetut listat</h2>
+
+<ul class="list-group">
+    @foreach (var list in Model)
+    {
+        <li class="list-group-item">
+            <a href="@Url.Action("ViewShared", "ShoppingLists", new { id = list.Id })">@list.Name</a>
+        </li>
+    }
+</ul>
