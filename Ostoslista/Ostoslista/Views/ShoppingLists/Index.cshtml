@@ -1,4 +1,4 @@
-﻿@model List<Ostoslista.ViewModels.ShoppingListViewModel>
+﻿@model Ostoslista.ViewModels.ShoppingListIndexViewModel
 
 @{
     ViewBag.Title = "Ostoslistat";
@@ -10,33 +10,70 @@
 
 <h2>Omat ostoslistat</h2>
 
-@if (Model.Count == 0)
+@if (Model.OwnShoppingLists.Count == 0)
 {
     <h4>Ei ostoslistoja. Luo uusi valitsemalla valikosta "Luo uusi"</h4>
 }
 
 <ul class="list-group">
-    @foreach (var list in Model)
+    @foreach (var list in Model.OwnShoppingLists)
     {
         <li class="list-group-item">
             @using (Html.BeginForm("Delete", "ShoppingLists", new { id = list.Id }))
             {
-                <button class="btn btn-danger btn-xs remove-item-button" data-toggle="tooltip" title="Poista lista" 
-                    onclick="return confirm('Poistetaanko lista?')"><span class="glyphicon glyphicon-remove"></span>
+                <button class="btn btn-danger btn-xs remove-item-button" data-toggle="tooltip" title="Poista lista"
+                        onclick="return confirm('Poistetaanko lista?')">
+                    <span class="glyphicon glyphicon-remove"></span>
                 </button>
-                <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })">@list.Name</a>
+                @list.Name
                 <span class="badge" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
+                <a href="@Url.Action("ViewShared", "ShoppingLists", new { id = list.Id })" , class="btn btn-info btn-xs">Näytä</a>
+                <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs">Muokkaa</a>
                 <span class="pull-right" data-toggle="tooltip" title="Luontipäivä">@list.AddedDate</span>
             }
         </li>
     }
 </ul>
 
+<h2>Jaetut listat</h2>
+
+<table class="table table-condensed table-hover shopping-list-table">
+    <thead>
+        <tr>
+            <th class="column-1"></th>
+            <th class="column-2"></th>
+            <th class="column-3"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var list in Model.SharedShoppingLists)
+        {
+            <tr>
+                <td class="column-1">
+                    <button class="btn btn-danger btn-xs remove-item-button" data-toggle="tooltip" title="Poista lista"
+                            onclick="return confirm('Poistetaanko lista?')">
+                        <span class="glyphicon glyphicon-remove"></span>
+                    </button>
+                    <a href="@Url.Action("ViewShared", "ShoppingLists", new { id = list.Id })">@list.Name</a>
+                    <span class="badge pull-right" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
+                </td>
+                <td class="column-2">
+                    @if (list.EditAllowed)
+                    {
+                        <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs pull-left">Muokkaa</a>
+                    }
+                    <span data-toggle="tooltip" title="Luontipäivä">@list.AddedDate</span>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
 @section scripts
 {
     <script>
-        $(document).ready(function(){
+        $(document).ready(function () {
             $('[data-toggle="tooltip"]').tooltip();
         });
-    </script>    
+    </script>
 }

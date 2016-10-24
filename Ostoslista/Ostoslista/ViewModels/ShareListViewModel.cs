@@ -15,5 +15,8 @@ namespace Ostoslista.ViewModels
         [Required(ErrorMessage = "Anna vastaanottajan sähköpostiosoite")]
         [Display(Name = "Vastaanottajan sähköpostiosoite")]
         public string ReceiverEmail { get; set; }
+
+        [Display(Name = "Salli muokkaus")]
+        public bool EditAllowed { get; set; }
     }
 }

@@ -88,7 +88,8 @@ namespace Ostoslista.Controllers
                 var share = new ShoppingListShare
                 {
                     ShoppingListId = vm.ShoppingListId,
-                    ReceiverUserId = receiver.Id
+                    ReceiverUserId = receiver.Id,
+                    EditAllowed = vm.EditAllowed
                 };
 
                 _context.ShoppingListShares.Add(share);

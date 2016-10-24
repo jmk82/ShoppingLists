@@ -209,6 +209,10 @@
     <Compile Include="Migrations\201610211317521_AddForeignKeysToShares.Designer.cs">
       <DependentUpon>201610211317521_AddForeignKeysToShares.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610241318231_AddEditAllowedPropertyToShare.cs" />
+    <Compile Include="Migrations\201610241318231_AddEditAllowedPropertyToShare.Designer.cs">
+      <DependentUpon>201610241318231_AddEditAllowedPropertyToShare.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -222,6 +226,7 @@
     <Compile Include="Utils\TimeConverter.cs" />
     <Compile Include="ViewModels\ComboViewModel.cs" />
     <Compile Include="ViewModels\ShareListViewModel.cs" />
+    <Compile Include="ViewModels\ShoppingListIndexViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListItemViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListViewModel.cs" />
   </ItemGroup>
@@ -235,7 +240,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <None Include="Properties\PublishProfiles\Ostoslistat - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\Ostokset - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -317,6 +322,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610211317521_AddForeignKeysToShares.resx">
       <DependentUpon>201610211317521_AddForeignKeysToShares.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610241318231_AddEditAllowedPropertyToShare.resx">
+      <DependentUpon>201610241318231_AddEditAllowedPropertyToShare.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

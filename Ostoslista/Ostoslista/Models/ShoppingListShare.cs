@@ -13,6 +13,7 @@ namespace Ostoslista.Models
         public int ShoppingListId { get; set; }
         public ShoppingList ShoppingList { get; set; }
         public string ReceiverUserId { get; set; }
+        public bool EditAllowed { get; set; }
 
         [ForeignKey("ReceiverUserId")]
         public ApplicationUser Receiver { get; set; }

@@ -24,12 +24,21 @@ namespace Ostoslista.Controllers
         {
             var userId = User.Identity.GetUserId();
             var lists = _context.ShoppingLists.Where(l => l.OwnerId == userId).Include(sl => sl.Items).ToList();
+            var shares = _context.ShoppingListShares.Where(l => l.ReceiverUserId == userId).ToList();
+            ICollection<ShoppingList> sharedLists = new List<ShoppingList>();
 
-            List<ShoppingListViewModel> listVms = new List<ShoppingListViewModel>();
+            foreach (var share in shares)
+            {
+                sharedLists.Add(_context.ShoppingLists.SingleOrDefault(s => s.Id == share.ShoppingListId));
+            }
+
+            var vm = new ShoppingListIndexViewModel();
+
+            vm.OwnShoppingLists = new List<ShoppingListViewModel>();
 
             foreach (var list in lists)
             {
-                listVms.Add(new ShoppingListViewModel
+                vm.OwnShoppingLists.Add(new ShoppingListViewModel
                 {
                     Id = list.Id,
                     Name = list.Name,
@@ -39,10 +48,24 @@ namespace Ostoslista.Controllers
                     //AddedDate = list.Added.ToString("d", CultureInfo.CreateSpecificCulture("fi-FI"))
                 });
             }
+            
+            foreach (var list in sharedLists)
+            {
+                vm.SharedShoppingLists.Add(new ShoppingListViewModel
+                {
+                    Id = list.Id,
+                    Name = list.Name,
+                    Items = list.Items,
+                    AddedDate = Utils.TimeConverter.ConvertToEetTime(list.Added)
+                                    .ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI")),
+                    EditAllowed = _context.ShoppingListShares.Any(s => s.ReceiverUserId == userId && s.ShoppingListId == list.Id 
+                                    && s.EditAllowed)
+                });
+            }
 
             ViewBag.Message = TempData["message"];
 
-            return View(listVms);
+            return View(vm);
         }
 
         public ActionResult Create()
