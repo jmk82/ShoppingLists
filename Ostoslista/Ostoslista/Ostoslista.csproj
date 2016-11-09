@@ -225,7 +225,9 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\TimeConverter.cs" />
     <Compile Include="ViewModels\ComboViewModel.cs" />
+    <Compile Include="ViewModels\EditSharesViewModel.cs" />
     <Compile Include="ViewModels\ShareListViewModel.cs" />
+    <Compile Include="ViewModels\ShowShareViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListIndexViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListItemViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListViewModel.cs" />
@@ -289,9 +291,9 @@
     <Content Include="Views\ShoppingLists\Create.cshtml" />
     <Content Include="Views\ShoppingLists\Edit.cshtml" />
     <Content Include="Views\Shares\Create.cshtml" />
-    <Content Include="Views\Shares\Index.cshtml" />
-    <Content Include="Views\ShoppingLists\ViewShared.cshtml" />
+    <Content Include="Views\ShoppingLists\View.cshtml" />
     <Content Include="Views\Shared\_ListsPartial.cshtml" />
+    <Content Include="Views\Shares\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

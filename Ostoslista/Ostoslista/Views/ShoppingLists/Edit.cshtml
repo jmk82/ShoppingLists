@@ -27,7 +27,7 @@
     <h5>Listalla ei vielä rivejä. Lisää ostoksia listalle.</h5>
 }
 
-<table class="table table-condensed table-hover" id="itemsTable">
+<table class="table table-hover" id="itemsTable">
     <tbody>
         @foreach (var item in Model.ShoppingListViewModel.Items)
         {
@@ -38,17 +38,25 @@
                         <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span></button>
                         @item.Name
                     }
-                    
                 </td>
                 <td>
-                    @*<button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-minus-sign"></span></button>*@
                     @item.Quantity
-                    @*<button class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-plus-sign"></span></button>*@
                 </td>
             </tr>
             }
     </tbody>
 </table>
 
+@if (Model.ShoppingListViewModel.Shares.Count() > 0)
+{
+    <h4>Listan käyttäjät: </h4>
+    <ul class="list-inline">
+        @foreach (var share in Model.ShoppingListViewModel.Shares)
+        {
+            <li>@share.UserName</li>
+        }
+    </ul>
+}
 
-<a href="@Url.Action("Create", "Shares", new { id = Model.ShoppingListViewModel.Id })" class="btn btn-primary">Jaa lista</a>
+<a href="@Url.Action("Create", "Shares", new { id = Model.ShoppingListViewModel.Id })" class="btn btn-primary">Lisää käyttäjä</a>
+<a href="@Url.Action("Edit", "Shares", new { id = Model.ShoppingListViewModel.Id })" class="btn btn-primary">Muokkaa oikeuksia</a>

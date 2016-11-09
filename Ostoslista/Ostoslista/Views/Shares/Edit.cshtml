@@ -1,0 +1,30 @@
+﻿@model List<Ostoslista.ViewModels.EditSharesViewModel>
+@{
+    ViewBag.Title = "Muokkaa listan oikeuksia";
+}
+
+<h2>Muokkaa listan oikeuksia</h2>
+
+<table>
+    @foreach (var share in Model)
+    {
+        <tr>
+            <td>
+                @share.UserName
+            </td>
+            <td>
+                @using (Html.BeginForm("Modify", "Shares", new { id = @share.UserId, allowEdit = !@share.EditAllowed }))
+                {
+                    if (@share.EditAllowed)
+                    {
+                        <button class="btn btn-sm btn-warning">Poista muokkausoikeus</button>
+                    }
+                    else
+                    {
+                        <button class="btn btn-sm btn-success">Lisää muokkausoikeus</button>
+                    }
+                }
+            </td>
+        </tr>
+    }
+</table>

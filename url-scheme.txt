@@ -1,0 +1,15 @@
+[GET]
+/lists			kaikki listat
+/lists/{id}		näytä tietty lista
+/lists/{id}/edit		muokkaa tiettyä listaa
+
+[POST]
+/lists			uusi lista
+/lists/{id}		uusi rivi listalle
+/shares			uusi jako
+
+[DELETE]
+/lists/{id}		poista lista
+/lists/{id}/item/{id}	poista rivi
+/shares/{id}		poista jako	*
+

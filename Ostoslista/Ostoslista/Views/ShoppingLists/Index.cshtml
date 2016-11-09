@@ -15,65 +15,115 @@
     <h4>Ei ostoslistoja. Luo uusi valitsemalla valikosta "Luo uusi"</h4>
 }
 
-<ul class="list-group">
-    @foreach (var list in Model.OwnShoppingLists)
-    {
-        <li class="list-group-item">
-            @using (Html.BeginForm("Delete", "ShoppingLists", new { id = list.Id }))
+    @*<ul class="list-group">
+            @foreach (var list in Model.OwnShoppingLists)
             {
-                <button class="btn btn-danger btn-xs remove-item-button" data-toggle="tooltip" title="Poista lista"
-                        onclick="return confirm('Poistetaanko lista?')">
-                    <span class="glyphicon glyphicon-remove"></span>
-                </button>
-                @list.Name
-                <span class="badge" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
-                <a href="@Url.Action("ViewShared", "ShoppingLists", new { id = list.Id })" , class="btn btn-info btn-xs">Näytä</a>
-                <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs">Muokkaa</a>
-                <span class="pull-right" data-toggle="tooltip" title="Luontipäivä">@list.AddedDate</span>
+                <li class="list-group-item">
+                    @list.Name (@list.OwnerName)<span class="badge" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
+                    <a href="@Url.Action("View", "ShoppingLists", new { id = list.Id })" , class="btn btn-danger btn-xs remove-item-button"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a href="@Url.Action("View", "ShoppingLists", new { id = list.Id })" , class="btn btn-info btn-xs">Näytä</a>
+                    <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs">Muokkaa</a>
+                    <span class="pull-right" data-toggle="tooltip" title="Luontipäivä">@list.AddedDate</span>
+                </li>
             }
-        </li>
-    }
-</ul>
+        </ul>*@
 
-<h2>Jaetut listat</h2>
-
-<table class="table table-condensed table-hover shopping-list-table">
-    <thead>
+    <table class="table table-hover">
         <tr>
-            <th class="column-1"></th>
-            <th class="column-2"></th>
-            <th class="column-3"></th>
+            <th>Lista</th>
+            <th></th>
+            <th>Omistaja</th>
+            <th style="text-align: right">Luotu</th>
         </tr>
-    </thead>
-    <tbody>
-        @foreach (var list in Model.SharedShoppingLists)
+        @foreach (var list in Model.OwnShoppingLists)
         {
             <tr>
-                <td class="column-1">
-                    <button class="btn btn-danger btn-xs remove-item-button" data-toggle="tooltip" title="Poista lista"
-                            onclick="return confirm('Poistetaanko lista?')">
-                        <span class="glyphicon glyphicon-remove"></span>
-                    </button>
-                    <a href="@Url.Action("ViewShared", "ShoppingLists", new { id = list.Id })">@list.Name</a>
-                    <span class="badge pull-right" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
-                </td>
-                <td class="column-2">
-                    @if (list.EditAllowed)
+                <td><a href="@Url.Action("View", "ShoppingLists", new { id = list.Id })">@list.Name</a></td>
+
+                <td>
+                    <span class="badge" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
+                    <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs">
+                        <span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Muokkaa"></span>
+                    </a>
+                    @using (Html.BeginForm("Delete", "ShoppingLists", new { id = list.Id }, FormMethod.Post, new { style = "display:inline" }))
                     {
-                        <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs pull-left">Muokkaa</a>
+                        <button class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove" data-toggle="tooltip" title="Poista"></span></button>
                     }
-                    <span data-toggle="tooltip" title="Luontipäivä">@list.AddedDate</span>
+                </td>
+                <td>@list.OwnerName</td>
+                <td style="text-align: right">
+                    @list.AddedDate
                 </td>
             </tr>
         }
-    </tbody>
-</table>
 
-@section scripts
+        @foreach (var list in Model.SharedShoppingLists)
+        {
+            <tr>
+                <td><a href="@Url.Action("View", "ShoppingLists", new { id = list.Id })">@list.Name</a></td>
+
+                <td>
+                    <span class="badge" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
+                    @if (list.EditAllowed)
+                {
+                        <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-edit" data-toggle="tooltip" title="Muokkaa"></span>
+                        </a>
+                    }
+                </td>
+                <td>@list.OwnerName</td>
+                <td style="text-align: right">
+                    @list.AddedDate
+                </td>
+            </tr>
+        }
+    </table>
+
+
+
+
+
+
+
+    @*<h2>Jaetut listat</h2>
+
+        <table class="table table-condensed table-hover shopping-list-table">
+            <thead>
+                <tr>
+                    <th class="column-1"></th>
+                    <th class="column-2"></th>
+                    <th class="column-3"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var list in Model.SharedShoppingLists)
+                {
+                    <tr>
+                        <td class="column-1">
+                            <button class="btn btn-danger btn-xs remove-item-button" data-toggle="tooltip" title="Poista lista"
+                                    onclick="return confirm('Poistetaanko lista?')">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <a href="@Url.Action("ViewShared", "ShoppingLists", new { id = list.Id })">@list.Name</a>
+                            <span class="badge pull-right" data-toggle="tooltip" title="Rivejä listalla">@list.Items.Count</span>
+                        </td>
+                        <td class="column-2">
+                            @if (list.EditAllowed)
+                            {
+                                <a href="@Url.Action("Edit", "ShoppingLists", new { id = list.Id })" , class="btn btn-success btn-xs pull-left">Muokkaa</a>
+                            }
+                            <span data-toggle="tooltip" title="Luontipäivä">@list.AddedDate</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>*@
+
+    @section scripts
 {
-    <script>
-        $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
-}
+        <script>
+            $(document).ready(function () {
+                $('[data-toggle="tooltip"]').tooltip();
+            });
+        </script>
+    }

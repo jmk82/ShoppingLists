@@ -56,8 +56,8 @@ namespace Ostoslista
             //   consumerSecret: "");
 
             app.UseFacebookAuthentication(
-               appId: ConfigurationManager.AppSettings["fbAppId"],
-               appSecret: ConfigurationManager.AppSettings["fbAppSecret"]);
+               appId: "fake",   // ConfigurationManager.AppSettings["fbAppId"],
+               appSecret: "fake");      // ConfigurationManager.AppSettings["fbAppSecret"]);
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

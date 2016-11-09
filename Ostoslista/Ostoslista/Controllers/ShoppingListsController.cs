@@ -23,14 +23,23 @@ namespace Ostoslista.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
-            var lists = _context.ShoppingLists.Where(l => l.OwnerId == userId).Include(sl => sl.Items).ToList();
-            var shares = _context.ShoppingListShares.Where(l => l.ReceiverUserId == userId).ToList();
-            ICollection<ShoppingList> sharedLists = new List<ShoppingList>();
 
-            foreach (var share in shares)
-            {
-                sharedLists.Add(_context.ShoppingLists.SingleOrDefault(s => s.Id == share.ShoppingListId));
-            }
+            // Omat listat
+            var lists = _context.ShoppingLists
+                            .Where(l => l.OwnerId == userId)
+                            .Include(l => l.Items)
+                            .Include(l => l.Owner)
+                            .ToList();
+
+            var ownListIds = lists.Select(l => l.Id);
+
+            // Jaot kirjautuneelle käyttäjälle, lukuunottamatta omia listoja jotka mahdollisesti jaoissa
+            var sharedLists = _context.ShoppingListShares
+                                .Where(s => s.ReceiverUserId == userId && !ownListIds.Contains(s.ShoppingListId))
+                                .Select(s => s.ShoppingList)
+                                .Include(l => l.Items)
+                                .Include(l => l.Owner)
+                                .ToList();
 
             var vm = new ShoppingListIndexViewModel();
 
@@ -38,27 +47,38 @@ namespace Ostoslista.Controllers
 
             foreach (var list in lists)
             {
+                if (list.Name.Length > 30)
+                {
+                    list.Name = list.Name.Substring(0, 27) + "...";
+                }
+
                 vm.OwnShoppingLists.Add(new ShoppingListViewModel
                 {
                     Id = list.Id,
                     Name = list.Name,
                     Items = list.Items,
+                    OwnerName = list.Owner.UserName,
                     AddedDate = Utils.TimeConverter.ConvertToEetTime(list.Added)
                                     .ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI"))
-                    //AddedDate = list.Added.ToString("d", CultureInfo.CreateSpecificCulture("fi-FI"))
                 });
             }
-            
+
             foreach (var list in sharedLists)
             {
+                if (list.Name.Length > 30)
+                {
+                    list.Name = list.Name.Substring(0, 27) + "...";
+                }
+
                 vm.SharedShoppingLists.Add(new ShoppingListViewModel
                 {
                     Id = list.Id,
                     Name = list.Name,
                     Items = list.Items,
+                    OwnerName = list.Owner.UserName,
                     AddedDate = Utils.TimeConverter.ConvertToEetTime(list.Added)
                                     .ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI")),
-                    EditAllowed = _context.ShoppingListShares.Any(s => s.ReceiverUserId == userId && s.ShoppingListId == list.Id 
+                    EditAllowed = _context.ShoppingListShares.Any(s => s.ReceiverUserId == userId && s.ShoppingListId == list.Id
                                     && s.EditAllowed)
                 });
             }
@@ -66,6 +86,11 @@ namespace Ostoslista.Controllers
             ViewBag.Message = TempData["message"];
 
             return View(vm);
+        }
+
+        public ActionResult ViewList(int id)
+        {
+            return RedirectToAction("Index");
         }
 
         public ActionResult Create()
@@ -106,14 +131,34 @@ namespace Ostoslista.Controllers
                 ViewBag.Message = "Ostoslistaa ei löytynyt";
                 return View("Error");
             }
-            if (shoppingList.OwnerId != userId)
+
+            var editAllowedForCurrentUser = _context.ShoppingListShares
+                                                .Any(s => s.ShoppingListId == shoppingList.Id && s.ReceiverUserId == userId && s.EditAllowed);
+
+            if (shoppingList.OwnerId != userId && !editAllowedForCurrentUser)
             {
                 Response.StatusCode = 403;
-                ViewBag.Message = "Ei oikeutta tarkastella ostoslistaa";
+                ViewBag.Message = "Ei oikeutta käsitellä ostoslistaa";
                 return View("Error");
             }
 
-            var vm = CreateShoppingListViewModel(shoppingList);
+            var vm = ShoppingListViewModel.Create(shoppingList);
+
+            var shares = _context.ShoppingListShares
+                            .Where(s => s.ShoppingListId == shoppingList.Id)
+                            .Include(s => s.Receiver);
+
+            List<ShowShareViewModel> shareVms = new List<ShowShareViewModel>();
+            foreach (var share in shares)
+            {
+                shareVms.Add(new ShowShareViewModel
+                {
+                    UserId = share.ReceiverUserId,
+                    UserName = share.Receiver.UserName
+                });
+            }
+
+            vm.Shares = shareVms;
 
             return View(new ComboViewModel { ShoppingListViewModel = vm });
         }
@@ -123,6 +168,23 @@ namespace Ostoslista.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = User.Identity.GetUserId();
+                var list = _context.ShoppingLists.FirstOrDefault(s => s.Id == vm.ShoppingListViewModel.Id);
+
+                if (list == null)
+                {
+                    Response.StatusCode = 404;
+                    ViewBag.Message = "Ostoslistaa ei löytynyt";
+                    return View("Error");
+                }
+
+                if (list.OwnerId != userId && !EditAllowedForCurrentUser(list))
+                {
+                    Response.StatusCode = 403;
+                    ViewBag.Message = "Ei oikeutta käsitellä ostoslistaa";
+                    return View("Error");
+                }
+
                 var item = new ShoppingListItem
                 {
                     Name = vm.ShoppingListItemViewModel.Name,
@@ -138,24 +200,13 @@ namespace Ostoslista.Controllers
             }
 
             var shoppingList = _context.ShoppingLists.Include(sl => sl.Items).SingleOrDefault(sl => sl.Id == vm.ShoppingListViewModel.Id);
+
             var comboVm = new ComboViewModel
             {
-                ShoppingListViewModel = CreateShoppingListViewModel(shoppingList)
+                ShoppingListViewModel = ShoppingListViewModel.Create(shoppingList)
             };
 
             return View(comboVm);
-        }
-
-        private ShoppingListViewModel CreateShoppingListViewModel(ShoppingList shoppingList)
-        {
-            var vm = new ShoppingListViewModel
-            {
-                Id = shoppingList.Id,
-                Name = shoppingList.Name,
-                Items = shoppingList.Items
-            };
-
-            return vm;
         }
 
         [HttpPost]
@@ -183,6 +234,7 @@ namespace Ostoslista.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
         public ActionResult DeleteItem(int id)
         {
             var userId = User.Identity.GetUserId();
@@ -197,7 +249,7 @@ namespace Ostoslista.Controllers
 
             var list = _context.ShoppingLists.SingleOrDefault(s => s.Id == item.ShoppingListId);
 
-            if (list.OwnerId != userId)
+            if (list.OwnerId != userId && !EditAllowedForCurrentUser(list))
             {
                 Response.StatusCode = 403;
                 ViewBag.Message = "Ei oikeutta poistaa ostosta";
@@ -210,22 +262,29 @@ namespace Ostoslista.Controllers
             return RedirectToAction("Edit", "ShoppingLists", new { id = list.Id });
         }
 
-        public ActionResult ViewShared(int? id)
+        public ActionResult View(int? id)
         {
             var userId = User.Identity.GetUserId();
 
-            var isAllowed = _context.ShoppingListShares.Any(s => s.ShoppingListId == id && s.ReceiverUserId == userId);
+            bool isOwnList = _context.ShoppingLists.Any(s => s.Id == id && s.OwnerId == userId);
+            bool isAllowed = _context.ShoppingListShares.Any(s => s.ShoppingListId == id && s.ReceiverUserId == userId);
 
-            if (!isAllowed)
+            if (isAllowed || isOwnList)
             {
-                Response.StatusCode = 403;
-                ViewBag.Message = "Ei oikeutta katsella ostoslistaa";
-                return View("Error");
+                var list = _context.ShoppingLists.Include(s => s.Items).SingleOrDefault(s => s.Id == id);
+
+                return View(list);
             }
 
-            var list = _context.ShoppingLists.Include(s => s.Items).SingleOrDefault(s => s.Id == id);
+            Response.StatusCode = 403;
+            ViewBag.Message = "Ei oikeutta katsella ostoslistaa";
+            return View("Error");
+        }
 
-            return View(list);
+        private bool EditAllowedForCurrentUser(ShoppingList list)
+        {
+            var userId = User.Identity.GetUserId();
+            return _context.ShoppingListShares.Any(s => s.ShoppingListId == list.Id && s.ReceiverUserId == userId && s.EditAllowed);
         }
     }
 }

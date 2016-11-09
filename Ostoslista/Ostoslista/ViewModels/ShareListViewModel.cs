@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Ostoslista.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -18,5 +19,7 @@ namespace Ostoslista.ViewModels
 
         [Display(Name = "Salli muokkaus")]
         public bool EditAllowed { get; set; }
+
+        public List<ShoppingListShare> Shares { get; set; }
     }
 }

@@ -16,9 +16,25 @@ namespace Ostoslista.ViewModels
         [StringLength(256, ErrorMessage = "Nimen pituus voi olla enintään {1} merkkiä")]
         public string Name { get; set; }
 
+        public string OwnerName { get; set; }
+
         public string AddedDate { get; set; }
         public bool EditAllowed { get; set; }
 
         public ICollection<ShoppingListItem> Items { get; set; }
+
+        public ICollection<ShowShareViewModel> Shares { get; set; }
+
+        public static ShoppingListViewModel Create(ShoppingList shoppingList)
+        {
+            var vm = new ShoppingListViewModel
+            {
+                Id = shoppingList.Id,
+                Name = shoppingList.Name,
+                Items = shoppingList.Items
+            };
+
+            return vm;
+        }
     }
 }

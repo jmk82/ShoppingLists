@@ -3,6 +3,7 @@ using Ostoslista.Models;
 using Ostoslista.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -19,21 +20,6 @@ namespace Ostoslista.Controllers
             _context = new ApplicationDbContext();
         }
 
-        public ActionResult Index()
-        {
-            var userId = User.Identity.GetUserId();
-            var shares = _context.ShoppingListShares.Where(s => s.ReceiverUserId == userId).ToList();
-
-            List<ShoppingList> lists = new List<ShoppingList>();
-
-            foreach (var share in shares)
-            {
-                lists.Add(_context.ShoppingLists.SingleOrDefault(s => s.Id == share.ShoppingListId));
-            }
-
-            return View(lists);
-        }
-
         public ActionResult Create(int? id)
         {
             var userId = User.Identity.GetUserId();
@@ -45,7 +31,10 @@ namespace Ostoslista.Controllers
                 ViewBag.Message = "Ostoslistaa ei löytynyt";
                 return View("Error");
             }
-            if (list.OwnerId != userId)
+
+            var editAllowed = _context.ShoppingListShares.Any(s => s.ShoppingListId == list.Id && s.ReceiverUserId == userId && s.EditAllowed);
+
+            if (list.OwnerId != userId && !editAllowed)
             {
                 Response.StatusCode = 403;
                 ViewBag.Message = "Ei oikeutta tarkastella ostoslistaa";
@@ -101,6 +90,24 @@ namespace Ostoslista.Controllers
             }
 
             return View(vm);
+        }
+
+        public ActionResult Edit(int? id)
+        {
+            var shares = _context.ShoppingListShares.Where(s => s.ShoppingListId == id).Include(s => s.Receiver);
+
+            List<EditSharesViewModel> shareVms = new List<EditSharesViewModel>();
+
+            foreach (var share in shares)
+            {
+                shareVms.Add(new EditSharesViewModel
+                {
+                    UserId = share.ReceiverUserId,
+                    UserName = share.Receiver.UserName,
+                    EditAllowed = share.EditAllowed
+                });
+            }
+            return View(shareVms);
         }
     }
 }

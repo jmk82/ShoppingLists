@@ -4,7 +4,7 @@
     ViewBag.Title = "Lista";
 }
 
-<h2>@Model.Name</h2>
+<h2>@Model.Name @Html.ActionLink("Muokkaa", "Edit", "ShoppingLists", new { id = Model.Id }, new { @class = "btn btn-success" } )</h2>
 
 <table class="table table-condensed table-hover" id="items-table">
     <tbody>
