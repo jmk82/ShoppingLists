@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Web;
 
@@ -15,6 +16,11 @@ namespace Ostoslista.Utils
             var convertedTime = TimeZoneInfo.ConvertTime(utcDt, eet);
 
             return convertedTime;
+        }
+
+        internal static string ConvertToEetTimeString(DateTime utcDt)
+        {
+            return ConvertToEetTime(utcDt).ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI"));
         }
     }
 }

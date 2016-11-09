@@ -55,11 +55,11 @@ namespace Ostoslista.Controllers
         {
             if (ModelState.IsValid)
             {
-                var receiver = _context.Users.SingleOrDefault(u => u.Email == vm.ReceiverEmail);
+                var receiver = _context.Users.SingleOrDefault(u => u.UserName == vm.ReceiverUsername);
 
                 if (receiver == null)
                 {
-                    ModelState.AddModelError("ReceiverEmail", "Käyttäjää ei löydy kyseisellä sähköpostiosoitteella. Tarkista osoite.");
+                    ModelState.AddModelError("ReceiverUsername", "Käyttäjää ei löydy kyseisellä nimellä. Tarkista käyttäjänimi.");
 
                     return View(vm);
                 }
@@ -84,7 +84,7 @@ namespace Ostoslista.Controllers
                 _context.ShoppingListShares.Add(share);
                 _context.SaveChanges();
 
-                TempData["message"] = "Lista '" + vm.Name + "' jaettu käyttäjälle " + vm.ReceiverEmail;
+                TempData["message"] = "Lista '" + vm.Name + "' jaettu käyttäjälle " + vm.ReceiverUsername;
 
                 return RedirectToAction("Index", "ShoppingLists");
             }
@@ -94,20 +94,50 @@ namespace Ostoslista.Controllers
 
         public ActionResult Edit(int? id)
         {
-            var shares = _context.ShoppingListShares.Where(s => s.ShoppingListId == id).Include(s => s.Receiver);
+            var shares = _context.ShoppingListShares
+                            .Where(s => s.ShoppingListId == id)
+                            .Include(s => s.Receiver)
+                            .Include(s => s.ShoppingList)
+                            .ToList();
 
-            List<EditSharesViewModel> shareVms = new List<EditSharesViewModel>();
+            List<EditShareViewModel> shareVms = new List<EditShareViewModel>();
 
             foreach (var share in shares)
             {
-                shareVms.Add(new EditSharesViewModel
+                var isOwner = share.ReceiverUserId == share.ShoppingList.OwnerId;
+
+                if (!isOwner)
                 {
-                    UserId = share.ReceiverUserId,
-                    UserName = share.Receiver.UserName,
-                    EditAllowed = share.EditAllowed
-                });
+                    shareVms.Add(new EditShareViewModel
+                    {
+                        UserId = share.ReceiverUserId,
+                        UserName = share.Receiver.UserName,
+                        EditAllowed = share.EditAllowed,
+                        ShareId = share.Id,
+                        ListId = share.ShoppingListId,
+                    });
+                }
             }
+
+            var list = _context.ShoppingLists.FirstOrDefault(s => s.Id == id);
+            ViewBag.ListName = list.Name;
+            ViewBag.Message = TempData["Message"];
+
             return View(shareVms);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(int listId, int shareId, bool allowEdit)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var share = _context.ShoppingListShares.Include(s => s.Receiver).FirstOrDefault(s => s.Id == shareId);
+            share.EditAllowed = allowEdit;
+            _context.SaveChanges();
+
+            TempData["Message"] = string.Format("Käyttäjän '{0}' oikeuksia muutettu", share.Receiver.UserName);
+
+            return RedirectToAction("Edit", new { id = listId });
         }
     }
 }

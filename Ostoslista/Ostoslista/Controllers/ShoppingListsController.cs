@@ -58,8 +58,7 @@ namespace Ostoslista.Controllers
                     Name = list.Name,
                     Items = list.Items,
                     OwnerName = list.Owner.UserName,
-                    AddedDate = Utils.TimeConverter.ConvertToEetTime(list.Added)
-                                    .ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI"))
+                    AddedDate = Utils.TimeConverter.ConvertToEetTimeString(list.Added)
                 });
             }
 
@@ -76,8 +75,7 @@ namespace Ostoslista.Controllers
                     Name = list.Name,
                     Items = list.Items,
                     OwnerName = list.Owner.UserName,
-                    AddedDate = Utils.TimeConverter.ConvertToEetTime(list.Added)
-                                    .ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI")),
+                    AddedDate = Utils.TimeConverter.ConvertToEetTimeString(list.Added),
                     EditAllowed = _context.ShoppingListShares.Any(s => s.ReceiverUserId == userId && s.ShoppingListId == list.Id
                                     && s.EditAllowed)
                 });
@@ -159,6 +157,7 @@ namespace Ostoslista.Controllers
             }
 
             vm.Shares = shareVms;
+            vm.IsOwner = shoppingList.OwnerId == userId;
 
             return View(new ComboViewModel { ShoppingListViewModel = vm });
         }
@@ -279,6 +278,31 @@ namespace Ostoslista.Controllers
             Response.StatusCode = 403;
             ViewBag.Message = "Ei oikeutta katsella ostoslistaa";
             return View("Error");
+        }
+
+        [HttpPost]
+        public ActionResult View(int itemId, int listId, bool bought)
+        {
+            var item = _context.ShoppingListItems.FirstOrDefault(i => i.Id == itemId);
+
+            if (item.Bought && !bought)
+            {
+                item.Bought = false;
+                item.TimeBought = null;
+                _context.SaveChanges();
+
+                return View(listId);
+            }
+            else if (!item.Bought && bought)
+            {
+                item.Bought = true;
+                item.TimeBought = DateTime.UtcNow;
+                _context.SaveChanges();
+
+                return View(listId);
+            }
+
+            return View(listId);
         }
 
         private bool EditAllowedForCurrentUser(ShoppingList list)

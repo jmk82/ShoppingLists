@@ -17,6 +17,7 @@ namespace Ostoslista.ViewModels
         public string Name { get; set; }
 
         public string OwnerName { get; set; }
+        public bool IsOwner { get; set; }
 
         public string AddedDate { get; set; }
         public bool EditAllowed { get; set; }

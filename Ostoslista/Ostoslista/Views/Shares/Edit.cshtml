@@ -1,9 +1,13 @@
-﻿@model List<Ostoslista.ViewModels.EditSharesViewModel>
+﻿@model List<Ostoslista.ViewModels.EditShareViewModel>
 @{
     ViewBag.Title = "Muokkaa listan oikeuksia";
 }
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success">@ViewBag.Message</div>
+}
 
-<h2>Muokkaa listan oikeuksia</h2>
+<h2>Muokkaa listan '@ViewBag.ListName' oikeuksia</h2>
 
 <table>
     @foreach (var share in Model)
@@ -13,7 +17,7 @@
                 @share.UserName
             </td>
             <td>
-                @using (Html.BeginForm("Modify", "Shares", new { id = @share.UserId, allowEdit = !@share.EditAllowed }))
+                @using (Html.BeginForm("Edit", "Shares", new { listId = share.ListId, shareId = @share.ShareId, allowEdit = !@share.EditAllowed }))
                 {
                     if (@share.EditAllowed)
                     {
@@ -28,3 +32,5 @@
         </tr>
     }
 </table>
+
+<div style="margin-top: 30px;"><a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-primary">Takaisin</a></div>

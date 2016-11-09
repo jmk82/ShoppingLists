@@ -10,27 +10,55 @@
     <tbody>
         @foreach (var item in Model.Items)
         {
-            <tr class="list-item" id="list-item-@item.Id">
-                <td>
-                    @item.Name
-                </td>
-                <td>
-                    @item.Quantity
-                </td>
-            </tr>
+            if (!item.Bought)
+            {
+                <tr class="list-item" id="list-item-@item.Id">
+                    <td>
+                        @using (Html.BeginForm("View", "ShoppingLists", new { itemId = item.Id, listId = Model.Id, bought = true }, FormMethod.Post, null))
+                        {
+                            <button class="btn btn-link">@item.Name</button>
+                        }
+                    </td>
+                    <td>
+                        @item.Quantity
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
 
-<h4 class="hidden-header">Ostettu: </h4>
+@if (Model.Items.Any(i => i.Bought))
+{
+    <h4>Ostettu: </h4>
+}
 
 <table class="table table-condensed table-hover" id="bought-items-table">
     <tbody>
-       
+       @foreach (var item in Model.Items)
+       {
+           if (item.Bought)
+           {
+            <tr class="bought-list-item" id="bought-list-item-@item.Id">
+                <td>
+                    @using (Html.BeginForm("View", "ShoppingLists", new { itemId = item.Id, listId = Model.Id, bought = false }, FormMethod.Post, null))
+                    {
+                        <button class="btn btn-link">@item.Name</button>
+                    }
+                </td>
+                <td>
+                    @item.Quantity
+                </td>
+                <td>
+                    @Ostoslista.Utils.TimeConverter.ConvertToEetTime(item.TimeBought.Value)
+                </td>
+            </tr>
+           }
+       }
     </tbody>
 </table>
 
-@section scripts
+@*@section scripts
 {
     <script>
         $(document).ready(function () {
@@ -44,4 +72,6 @@
             });
         });
     </script>
-}
+}*@
+
+<div style="margin-top: 30px;"><a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-primary">Takaisin</a></div>

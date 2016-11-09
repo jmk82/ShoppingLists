@@ -6,8 +6,8 @@ namespace Ostoslista.Models
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "Sähköposti")]
-        public string Email { get; set; }
+        [Display(Name = "Käyttäjänimi")]
+        public string Username { get; set; }
     }
 
     public class ExternalLoginListViewModel
@@ -49,9 +49,8 @@ namespace Ostoslista.Models
     public class LoginViewModel
     {
         [Required]
-        [Display(Name = "Sähköposti")]
-        [EmailAddress]
-        public string Email { get; set; }
+        [Display(Name = "Käyttäjänimi")]
+        public string Username { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
@@ -64,10 +63,15 @@ namespace Ostoslista.Models
 
     public class RegisterViewModel
     {
+        //[Required]
+        //[EmailAddress]
+        //[Display(Name = "Sähköposti")]
+        //public string Email { get; set; }
+
         [Required]
-        [EmailAddress]
-        [Display(Name = "Sähköposti")]
-        public string Email { get; set; }
+        [StringLength(100, ErrorMessage = "{0} tulee olla vähintään {2} merkkiä", MinimumLength = 4)]
+        [Display(Name = "Käyttäjänimi")]
+        public string Username { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "{0} tulee olla vähintään {2} merkkiä", MinimumLength = 6)]

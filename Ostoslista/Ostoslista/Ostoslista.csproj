@@ -213,6 +213,18 @@
     <Compile Include="Migrations\201610241318231_AddEditAllowedPropertyToShare.Designer.cs">
       <DependentUpon>201610241318231_AddEditAllowedPropertyToShare.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611091458265_ChangeStrickenToBought.cs" />
+    <Compile Include="Migrations\201611091458265_ChangeStrickenToBought.Designer.cs">
+      <DependentUpon>201611091458265_ChangeStrickenToBought.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611091503213_AddTimeBought.cs" />
+    <Compile Include="Migrations\201611091503213_AddTimeBought.Designer.cs">
+      <DependentUpon>201611091503213_AddTimeBought.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201611091645328_AddTimeBoughtToItem.cs" />
+    <Compile Include="Migrations\201611091645328_AddTimeBoughtToItem.Designer.cs">
+      <DependentUpon>201611091645328_AddTimeBoughtToItem.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -225,7 +237,7 @@
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\TimeConverter.cs" />
     <Compile Include="ViewModels\ComboViewModel.cs" />
-    <Compile Include="ViewModels\EditSharesViewModel.cs" />
+    <Compile Include="ViewModels\EditShareViewModel.cs" />
     <Compile Include="ViewModels\ShareListViewModel.cs" />
     <Compile Include="ViewModels\ShowShareViewModel.cs" />
     <Compile Include="ViewModels\ShoppingListIndexViewModel.cs" />
@@ -297,6 +309,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\ShoppingListItems\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -327,6 +340,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610241318231_AddEditAllowedPropertyToShare.resx">
       <DependentUpon>201610241318231_AddEditAllowedPropertyToShare.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611091458265_ChangeStrickenToBought.resx">
+      <DependentUpon>201611091458265_ChangeStrickenToBought.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611091503213_AddTimeBought.resx">
+      <DependentUpon>201611091503213_AddTimeBought.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611091645328_AddTimeBoughtToItem.resx">
+      <DependentUpon>201611091645328_AddTimeBoughtToItem.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
