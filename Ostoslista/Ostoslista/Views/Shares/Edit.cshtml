@@ -9,6 +9,11 @@
 
 <h2>Muokkaa listan '@ViewBag.ListName' oikeuksia</h2>
 
+@if (Model.Count() == 0)
+{
+    <h5>Listalle ei ole lisätty käyttäjiä</h5>
+}
+
 <table>
     @foreach (var share in Model)
     {
@@ -29,8 +34,14 @@
                     }
                 }
             </td>
+            <td>
+                @using (Html.BeginForm("Delete", "Shares", new { listId = share.ListId, shareId = share.ShareId }))
+                {
+                    <button class="btn btn-sm btn-danger">Poista lista käyttäjältä</button>
+                }
+            </td>
         </tr>
     }
 </table>
 
-<div style="margin-top: 30px;"><a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-primary">Takaisin</a></div>
+<div style="margin-top: 30px;">@Html.ActionLink("Palaa listaan", "Edit", "ShoppingLists", new { id = ViewBag.ListId }, new { @class = "btn btn-primary" })</div>

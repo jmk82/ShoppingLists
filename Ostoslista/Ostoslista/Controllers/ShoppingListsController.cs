@@ -268,9 +268,22 @@ namespace Ostoslista.Controllers
             bool isOwnList = _context.ShoppingLists.Any(s => s.Id == id && s.OwnerId == userId);
             bool isAllowed = _context.ShoppingListShares.Any(s => s.ShoppingListId == id && s.ReceiverUserId == userId);
 
+            // Onko oikeus tarkastella listaa
             if (isAllowed || isOwnList)
             {
                 var list = _context.ShoppingLists.Include(s => s.Items).SingleOrDefault(s => s.Id == id);
+
+                bool hasEditRight = _context.ShoppingListShares.Any(s => s.ShoppingListId == id && s.ReceiverUserId == userId && s.EditAllowed);
+
+                // Onko oikeus muokata listaa
+                if (isOwnList || hasEditRight)
+                {
+                    ViewBag.ShowEditLink = true;
+                }
+                else
+                {
+                    ViewBag.ShowEditLink = false;
+                }
 
                 return View(list);
             }
@@ -291,7 +304,7 @@ namespace Ostoslista.Controllers
                 item.TimeBought = null;
                 _context.SaveChanges();
 
-                return View(listId);
+                return RedirectToAction("View", new { id = listId });
             }
             else if (!item.Bought && bought)
             {
@@ -299,7 +312,7 @@ namespace Ostoslista.Controllers
                 item.TimeBought = DateTime.UtcNow;
                 _context.SaveChanges();
 
-                return View(listId);
+                return RedirectToAction("View", new { id = listId });
             }
 
             return View(listId);

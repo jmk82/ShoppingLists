@@ -18,7 +18,7 @@ namespace Ostoslista.Utils
             return convertedTime;
         }
 
-        internal static string ConvertToEetTimeString(DateTime utcDt)
+        public static string ConvertToEetTimeString(DateTime utcDt)
         {
             return ConvertToEetTime(utcDt).ToString("d.M.yyyy H:mm", CultureInfo.CreateSpecificCulture("fi-FI"));
         }

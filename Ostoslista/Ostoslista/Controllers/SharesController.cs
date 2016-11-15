@@ -121,6 +121,7 @@ namespace Ostoslista.Controllers
 
             var list = _context.ShoppingLists.FirstOrDefault(s => s.Id == id);
             ViewBag.ListName = list.Name;
+            ViewBag.ListId = list.Id;
             ViewBag.Message = TempData["Message"];
 
             return View(shareVms);
@@ -136,6 +137,22 @@ namespace Ostoslista.Controllers
             _context.SaveChanges();
 
             TempData["Message"] = string.Format("Käyttäjän '{0}' oikeuksia muutettu", share.Receiver.UserName);
+
+            return RedirectToAction("Edit", new { id = listId });
+        }
+
+        [HttpPost]
+        public ActionResult Delete(int listId, int shareId)
+        {
+            var userId = User.Identity.GetUserId();
+            bool isOwnList = _context.ShoppingLists.Any(s => s.Id == listId && s.OwnerId == userId);
+
+            if (isOwnList)
+            {
+                var share = _context.ShoppingListShares.FirstOrDefault(s => s.Id == shareId);
+                _context.ShoppingListShares.Remove(share);
+                _context.SaveChanges();
+            }
 
             return RedirectToAction("Edit", new { id = listId });
         }

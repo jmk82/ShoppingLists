@@ -4,7 +4,13 @@
     ViewBag.Title = "Lista";
 }
 
-<h2>@Model.Name @Html.ActionLink("Muokkaa", "Edit", "ShoppingLists", new { id = Model.Id }, new { @class = "btn btn-success" } )</h2>
+<h2>
+    @Model.Name
+    @if (ViewBag.ShowEditLink) {
+        @Html.ActionLink("Muokkaa", "Edit", "ShoppingLists", new { id = Model.Id }, new { @class = "btn btn-success" })
+    }
+</h2>
+
 
 <table class="table table-condensed table-hover" id="items-table">
     <tbody>
@@ -50,7 +56,7 @@
                     @item.Quantity
                 </td>
                 <td>
-                    @Ostoslista.Utils.TimeConverter.ConvertToEetTime(item.TimeBought.Value)
+                    @Ostoslista.Utils.TimeConverter.ConvertToEetTimeString(item.TimeBought.Value)
                 </td>
             </tr>
            }
@@ -58,20 +64,4 @@
     </tbody>
 </table>
 
-@*@section scripts
-{
-    <script>
-        $(document).ready(function () {
-            $('.list-item').click(function () {
-                $('.hidden-header').css("visibility", "visible");
-                var clickedRow = $(this);
-                var col1 = clickedRow.find(":first-child").text();
-                var col2 = clickedRow.find(":nth-child(2)").text();
-                $('#bought-items-table > tbody').append('<tr><td>' + col1 + '</td><td>'+ col2 + '</td></tr>');
-                clickedRow.remove();
-            });
-        });
-    </script>
-}*@
-
-<div style="margin-top: 30px;"><a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-primary">Takaisin</a></div>
+<div style="margin-top: 30px;">@Html.ActionLink("Palaa listoihin", "Index", "ShoppingLists", null, new { @class = "btn btn-primary" })</div>

@@ -17,11 +17,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Ostoslistat", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Etusivu", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Omat Listat", "Index", "ShoppingLists")</li>
+                    <li>@Html.ActionLink("Ostoslistat", "Index", "ShoppingLists")</li>
                     <li>@Html.ActionLink("Luo uusi", "Create", "ShoppingLists")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")

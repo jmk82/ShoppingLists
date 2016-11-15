@@ -254,6 +254,7 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <None Include="Properties\PublishProfiles\Ostokset - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\Ostokset - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -304,7 +305,6 @@
     <Content Include="Views\ShoppingLists\Edit.cshtml" />
     <Content Include="Views\Shares\Create.cshtml" />
     <Content Include="Views\ShoppingLists\View.cshtml" />
-    <Content Include="Views\Shared\_ListsPartial.cshtml" />
     <Content Include="Views\Shares\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
