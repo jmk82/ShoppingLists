@@ -18,3 +18,5 @@ Projektissa käytetty mm.:
 - Azure Web Deploy
 - Azure SQL Database
 - Facebook -login
+
+Voi kokeilla osoitteessa https://ostokset.azurewebsites.net/
