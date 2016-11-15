@@ -55,10 +55,11 @@ namespace Ostoslista
             //   consumerKey: "",
             //   consumerSecret: "");
 
+#if (!DEBUG)
             app.UseFacebookAuthentication(
                appId: ConfigurationManager.AppSettings["fbAppId"],
                appSecret: ConfigurationManager.AppSettings["fbAppSecret"]);
-
+#endif
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{
             //    ClientId = "",

@@ -150,6 +150,14 @@ namespace Ostoslista.Controllers
             if (isOwnList)
             {
                 var share = _context.ShoppingListShares.FirstOrDefault(s => s.Id == shareId);
+
+                if (share == null)
+                {
+                    Response.StatusCode = 404;
+                    ViewBag.Message = "Tapahtui virhe";
+                    return View("Error");
+                }
+
                 _context.ShoppingListShares.Remove(share);
                 _context.SaveChanges();
             }

@@ -13,15 +13,15 @@ namespace Ostoslista
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRoute(
-                name: "",
-                url: "lists/{id}",
-                defaults: new { controller = "ShoppingLists", action = "ViewList" });
+            //routes.MapRoute(
+            //    name: "",
+            //    url: "lists/{id}",
+            //    defaults: new { controller = "ShoppingLists", action = "ViewList" });
 
-            routes.MapRoute(
-                name: "",
-                url: "lists",
-                defaults: new { controller = "ShoppingLists", action = "Index" });
+            //routes.MapRoute(
+            //    name: "",
+            //    url: "lists",
+            //    defaults: new { controller = "ShoppingLists", action = "Index" });
 
             routes.MapRoute(
                 name: "Default",
